@@ -243,24 +243,30 @@
 									<style>
 										.gallery-grid {
 											display: grid;
-											grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-											grid-auto-rows: 10px;
-											gap: 8px;
-											margin: 2em 0;
+											grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+											grid-auto-rows: 8px;
+											gap: 6px;
+											margin: 1.5em 0;
+											align-items: start;
+											justify-items: center;
+											grid-gap: 6px;
 										}
 										.gallery-grid img {
 											width: 100%;
 											height: auto;
 											object-fit: cover;
-											border-radius: 8px;
-											box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-											transition: transform 0.2s;
-											grid-row-end: span var(--row-span, 30);
+											border-radius: 6px;
+											box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+											transition: transform 0.2s ease, box-shadow 0.2s ease;
+											grid-row-end: span var(--row-span, 25);
+											display: block;
+											margin: 0;
+											padding: 0;
 										}
 										.gallery-grid img:hover {
-											transform: scale(1.02);
-											box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-											z-index: 1;
+											transform: scale(1.03);
+											box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+											z-index: 2;
 										}
 									</style>
 									<script>
@@ -270,9 +276,9 @@
 											images.forEach(img => {
 												img.addEventListener('load', function() {
 													const aspectRatio = this.naturalHeight / this.naturalWidth;
-													const baseHeight = 250; // Base width of grid items
+													const baseHeight = 200; // Base width of grid items (updated to match CSS)
 													const calculatedHeight = baseHeight * aspectRatio;
-													const rowSpan = Math.ceil(calculatedHeight / 10); // 10px is grid-auto-rows
+													const rowSpan = Math.ceil(calculatedHeight / 8); // 8px is grid-auto-rows (updated)
 													this.style.setProperty('--row-span', rowSpan);
 												});
 												// Trigger for already loaded images
