@@ -13,62 +13,6 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
-		<div class="background-slideshow">
-			<div class="bg-slide active" style="background-image: url('images/VP/Cyberpunk2077%202025-05-08%2018-24-01.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/eldenring%202024-09-11%2014-08-38ds.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/Cyberpunk2077%202025-03-12%2017-40-00.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/Untitled-1dfgdfgdfg.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/eldenring%202024-09-11%2021-20-13.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/Cyberpunk2077%202025-01-07%2000-26-47.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/eldenring%202024-09-11%2019-13-24.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/Untitled-1uttu.png')"></div>
-			<div class="bg-slide" style="background-image: url('images/VP/Cyberpunk2077%202025-02-13%2021-36-32.png')"></div>
-		</div>
-		<style>
-			.background-slideshow {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100vh;
-				z-index: -1;
-				overflow: hidden;
-			}
-			.bg-slide {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background-size: cover;
-				background-position: center;
-				background-repeat: no-repeat;
-				opacity: 0;
-				transition: opacity 2s ease-in-out;
-			}
-			.bg-slide.active {
-				opacity: 1;
-			}
-			.bg-slide::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(0, 0, 0, 0.3);
-			}
-		</style>
-		<script>
-			var bgSlideIndex = 0;
-			var bgSlides = document.querySelectorAll('.bg-slide');
-			function changeBgSlide() {
-				bgSlides[bgSlideIndex].classList.remove('active');
-				bgSlideIndex = (bgSlideIndex + 1) % bgSlides.length;
-				bgSlides[bgSlideIndex].classList.add('active');
-			}
-			setInterval(changeBgSlide, 5000);
-		</script>
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -271,27 +215,30 @@
 								</div>
 								<div style="text-align:center; margin-top: 2em;">
 									<div class="gallery-grid">
-										<img src="images/VP/Cyberpunk2077%202025-05-08%2018-24-01.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2014-08-38ds.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-03-12%2017-40-00.png" alt="Gallery Image" />
-										<img src="images/VP/Untitled-1dfgdfgdfg.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2021-20-13.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-01-07%2000-26-47.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2019-13-24.png" alt="Gallery Image" />
-										<img src="images/VP/Untitled-1uttu.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-05-04%2021-51-45.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2019-08-15.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-03-02%2022-59-03.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2020-43-28.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-02-13%2021-36-32.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2019-54-17.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-01-07%2000-45-59.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2021-38-04.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-04-01%2022-32-43.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2022-01-45.png" alt="Gallery Image" />
-										<img src="images/VP/Cyberpunk2077%202025-03-12%2019-56-14.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2021-52-55.png" alt="Gallery Image" />
-										<img src="images/VP/eldenring%202024-09-11%2022-14-34.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-05-08%2018-24-01.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-05-06%2022-14-35.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-03-12%2019-56-14.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-03-12%2017-19-09.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-03-02%2022-55-00.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-03-02%2022-47-04.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-02-13%2022-30-15.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-02-13%2021-55-11.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-01-07%2000-26-47.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202025-01-02%2022-22-34.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-12-29%2016-07-03.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202024-10-09%2013-19-02.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2019-08-151.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Untitled-1uttu.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2022-14-34.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2021-08-55.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2019-43-08.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2016-37-24.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2016-34-10.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2014-27-53.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/eldenring%202024-09-11%2014-00-45.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202024-08-31%2021-52-14.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202024-08-31%2017-35-01.png" alt="Gallery Image" />
+										<img src="images/VP/GALLERY/Cyberpunk2077%202024-08-30%2020-55-17.png" alt="Gallery Image" />
 									</div>
 									<style>
 										.gallery-grid {
@@ -333,6 +280,18 @@
 													img.dispatchEvent(new Event('load'));
 												}
 											});
+											
+											// Randomize gallery images order
+											const galleryGrid = document.querySelector('.gallery-grid');
+											if (galleryGrid) {
+												const imageElements = Array.from(galleryGrid.children);
+												
+												// Fisher-Yates shuffle algorithm
+												for (let i = imageElements.length - 1; i > 0; i--) {
+													const j = Math.floor(Math.random() * (i + 1));
+													galleryGrid.appendChild(imageElements[j]);
+												}
+											}
 										});
 									</script>
 								</div>
