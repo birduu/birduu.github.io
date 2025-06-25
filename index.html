@@ -198,21 +198,6 @@
 						<!-- Graphics -->
 							<article id="GameCaptureScreenshot">
 								<h2 class="major">Game Capture (Screenshot)</h2>
-								<div class="slideshow-container">
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202024-10-05%2011-55-18.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202024-10-09%2017-09-23.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-08%2018-18-051.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-08%2018-24-01.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-02-13%2021-36-32.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-04%2021-51-45.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-06%2023-26-471.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-07%2000-10-27.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-07%2000-07-39.png" style="width:100%"></div>
-									<div class="slideshow-slide fade"><img src="images/VP/Cyberpunk2077%202025-05-06%2022-14-35.png" style="width:100%"></div>
-									<!-- Add more images as needed -->
-									<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-									<a class="next" onclick="plusSlides(1)">&#10095;</a>
-								</div>
 								<div style="text-align:center; margin-top: 2em;">
 									<div class="gallery-grid">
 										<img src="images/VP/GALLERY/Cyberpunk2077%202025-05-08%2018-24-01.png" alt="Gallery Image" />
@@ -304,51 +289,6 @@
 								<div style="text-align:center; margin-top: 2em;">
 									<a href="https://www.picashot.co/hangaku" target="_blank" style="display:inline-block; padding:1em 2em; background:#1b1f22; color:#fff; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.2em;">View Full Gallery</a>
 								</div>
-								<style>
-									.slideshow-container { position: relative; margin: auto; max-width: 600px; }
-									.slideshow-slide { display: none; }
-									.fade { animation: fade 1s; }
-									@keyframes fade { from { opacity: .4 } to { opacity: 1 } }
-									.prev, .next { cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 18px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background: rgba(0,0,0,0.5); }
-									.next { right: 0; border-radius: 3px 0 0 3px; }
-									.prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
-									.dot { cursor: pointer; height: 15px; width: 15px; margin: 0 2px; background-color: #bbb; border-radius: 50%; display: inline-block; transition: background-color 0.6s ease; }
-									.active, .dot:hover { background-color: #717171; }
-								</style>
-								<script>
-									var slideIndex = 1;
-									var slideInterval;
-									showSlides(slideIndex);
-									startSlideShow();
-									function plusSlides(n) {
-										showSlides(slideIndex += n);
-										resetSlideShow();
-									}
-									function currentSlide(n) {
-										showSlides(slideIndex = n);
-										resetSlideShow();
-									}
-									function showSlides(n) {
-										var i;
-										var slides = document.getElementsByClassName("slideshow-slide");
-										var dots = document.getElementsByClassName("dot");
-										if (n > slides.length) {slideIndex = 1}
-										if (n < 1) {slideIndex = slides.length}
-										for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
-										for (i = 0; i < dots.length; i++) { dots[i].className = dots[i].className.replace(" active", ""); }
-										slides[slideIndex-1].style.display = "block";
-										dots[slideIndex-1].className += " active";
-									}
-									function startSlideShow() {
-										slideInterval = setInterval(function() {
-											plusSlides(1);
-										}, 3000);
-									}
-									function resetSlideShow() {
-										clearInterval(slideInterval);
-										startSlideShow();
-									}
-								</script>
 							
 							</article>
 							
