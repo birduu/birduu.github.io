@@ -310,10 +310,6 @@
 											max-width: 90%;
 											max-height: 90%;
 											object-fit: contain;
-											position: absolute;
-											top: 50%;
-											left: 50%;
-											transform: translate(-50%, -50%);
 											border-radius: 8px;
 											box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 										}
@@ -388,6 +384,21 @@
 													modal.classList.add('show');
 													modalImg.src = this.src;
 													modalImg.alt = this.alt;
+													
+													// Position modal relative to current scroll position
+													const scrollY = window.scrollY || window.pageYOffset;
+													const windowHeight = window.innerHeight;
+													const modalHeight = Math.min(windowHeight * 0.9, modalImg.naturalHeight * (window.innerWidth * 0.9 / modalImg.naturalWidth));
+													
+													// Calculate center position relative to scroll
+													const centerY = scrollY + (windowHeight / 2);
+													const modalTop = centerY - (modalHeight / 2);
+													
+													// Apply positioning
+													modalImg.style.position = 'fixed';
+													modalImg.style.top = Math.max(20, modalTop) + 'px';
+													modalImg.style.left = '50%';
+													modalImg.style.transform = 'translateX(-50%)';
 												});
 											});
 											
