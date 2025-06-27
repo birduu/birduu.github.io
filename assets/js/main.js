@@ -14,6 +14,37 @@
 		$main = $('#main'),
 		$main_articles = $main.children('article');
 
+	// Background cycling functionality
+	var backgroundImages = ['bg1.png', 'bg2.png'];
+	var currentBgIndex = 0;
+	var bgCycleInterval;
+
+	function cycleBackground() {
+		// Randomly select a background image
+		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
+		var newBgImage = backgroundImages[randomIndex];
+		
+		// Update the CSS custom property for the :after pseudo-element
+		document.documentElement.style.setProperty('--bg-image', 'url("../../images/' + newBgImage + '")');
+	}
+
+	// Start background cycling when page loads
+	$window.on('load', function() {
+		// Initial background cycle
+		cycleBackground();
+		
+		// Set up periodic cycling (every 30 seconds)
+		bgCycleInterval = setInterval(cycleBackground, 30000);
+		
+		// Allow manual cycling by clicking on the header
+		$header.on('click', function(e) {
+			// Only trigger if clicking on the header itself, not on navigation links
+			if (e.target === this || $(e.target).closest('.content').length > 0) {
+				cycleBackground();
+			}
+		});
+	});
+
 	// Breakpoints.
 		breakpoints({
 			xlarge:   [ '1281px',  '1680px' ],

@@ -1118,6 +1118,10 @@ input, select, textarea {
 		width: 100%;
 		height: 100vh;
 		z-index: 1;
+		-moz-transition: background-image 1s ease-in-out;
+		-webkit-transition: background-image 1s ease-in-out;
+		-ms-transition: background-image 1s ease-in-out;
+		transition: background-image 1s ease-in-out;
 	}
 
 		#bg:before, #bg:after {
@@ -1154,11 +1158,11 @@ input, select, textarea {
 			-webkit-transform: scale(1.125);
 			-ms-transform: scale(1.125);
 			transform: scale(1.125);
-			-moz-transition: -moz-transform 0.325s ease-in-out, -moz-filter 0.325s ease-in-out;
-			-webkit-transition: -webkit-transform 0.325s ease-in-out, -webkit-filter 0.325s ease-in-out;
-			-ms-transition: -ms-transform 0.325s ease-in-out, -ms-filter 0.325s ease-in-out;
-			transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out;
-			background-image: url("../../images/bg1.png");
+			-moz-transition: -moz-transform 0.325s ease-in-out, -moz-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+			-webkit-transition: -webkit-transform 0.325s ease-in-out, -webkit-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+			-ms-transition: -ms-transform 0.325s ease-in-out, -ms-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+			transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out, background-image 1s ease-in-out;
+			background-image: var(--bg-image, url("../../images/bg1.png"));
 			background-position: center;
 			background-size: cover;
 			background-repeat: no-repeat;
@@ -1260,7 +1264,15 @@ input, select, textarea {
 		background-image: radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%);
 		max-width: 100%;
 		text-align: center;
+		cursor: pointer;
 	}
+
+		#header:hover {
+			-moz-transform: scale(1.02);
+			-webkit-transform: scale(1.02);
+			-ms-transform: scale(1.02);
+			transform: scale(1.02);
+		}
 
 		#header > * {
 			-moz-transition: opacity 0.325s ease-in-out;
