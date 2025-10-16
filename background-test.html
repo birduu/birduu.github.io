@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: #131519;
+        }
+        
+        .test-container {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        
+        /* Copy the exact background styles from main.css */
+        #bg {
+            -moz-transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+            -ms-transform: scale(1.0);
+            transform: scale(1.0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -moz-transition: -moz-transform 2s ease;
+            -webkit-transition: -webkit-transform 2s ease;
+            -ms-transition: -ms-transform 2s ease;
+            transition: transform 2s ease;
+            -webkit-transition: background-image 1s ease-in-out;
+            -ms-transition: background-image 1s ease-in-out;
+            transition: background-image 1s ease-in-out;
+        }
+
+        #bg:before, #bg:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #bg:before {
+            -moz-transition: background-color 2.5s ease-in-out;
+            -webkit-transition: background-color 2.5s ease-in-out;
+            -ms-transition: background-color 2.5s ease-in-out;
+            transition: background-color 2.5s ease-in-out;
+            -moz-transition-delay: 0.75s;
+            -webkit-transition-delay: 0.75s;
+            -ms-transition-delay: 0.75s;
+            transition-delay: 0.75s;
+            background-color: #1a1a1a;
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-opacity='0.03'%3E%3Cpolygon fill='%23ffffff' points='50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40'/%3E%3C/g%3E%3C/svg%3E");
+            background-position: center;
+            background-size: auto,
+            auto;
+            background-repeat: no-repeat,
+            repeat;
+            z-index: 2;
+        }
+
+        #bg:after {
+            -moz-transform: scale(1.125);
+            -webkit-transform: scale(1.125);
+            -ms-transform: scale(1.125);
+            transform: scale(1.125);
+            -moz-transition: -moz-transform 0.325s ease-in-out, -moz-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+            -webkit-transition: -webkit-transform 0.325s ease-in-out, -webkit-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+            -ms-transition: -ms-transform 0.325s ease-in-out, -ms-filter 0.325s ease-in-out, background-image 1s ease-in-out;
+            transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out, background-image 1s ease-in-out;
+            background-image: url("images/bg1.png");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+        
+        .test-button {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .test-button:hover {
+            background: #357abd;
+        }
+        
+        .status {
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Background Image Test</h1>
+        <p>This page tests the background image cycling functionality.</p>
+        
+        <div class="status" id="status">Testing background images...</div>
+        
+        <button class="test-button" onclick="testBackground1()">Test bg1.png</button>
+        <button class="test-button" onclick="testBackground2()">Test bg2.png</button>
+        <button class="test-button" onclick="testWebP()">Test WebP Support</button>
+        <button class="test-button" onclick="cycleBackground()">Cycle Background</button>
+        
+        <div class="status" id="webp-status">WebP support: Testing...</div>
+        <div class="status" id="image-status">Image loading: Testing...</div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
+
+    <script>
+        // Background cycling functionality (copied from main.js)
+        var backgroundImages = ['bg1.png', 'bg2.png'];
+        var bgElement = document.getElementById('bg');
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = new Date().toLocaleTimeString() + ': ' + message;
+        }
+
+        function testWebPSupport() {
+            var supportsWebP = false;
+            var canvas = document.createElement('canvas');
+            if (canvas.getContext && canvas.getContext('2d')) {
+                supportsWebP = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+            }
+            document.getElementById('webp-status').textContent = 'WebP support: ' + (supportsWebP ? 'Yes' : 'No');
+            return supportsWebP;
+        }
+
+        function testImageLoading() {
+            var img1 = new Image();
+            var img2 = new Image();
+            var loadedCount = 0;
+            
+            function onLoad() {
+                loadedCount++;
+                if (loadedCount === 2) {
+                    document.getElementById('image-status').textContent = 'Image loading: Both images loaded successfully';
+                }
+            }
+            
+            function onError(img) {
+                document.getElementById('image-status').textContent = 'Image loading: Failed to load ' + img.src.split('/').pop();
+            }
+            
+            img1.onload = onLoad;
+            img1.onerror = () => onError(img1);
+            img1.src = 'images/bg1.png';
+            
+            img2.onload = onLoad;
+            img2.onerror = () => onError(img2);
+            img2.src = 'images/bg2.png';
+        }
+
+        function cycleBackground() {
+            var randomIndex = Math.floor(Math.random() * backgroundImages.length);
+            var newBgImage = backgroundImages[randomIndex];
+            
+            var supportsWebP = testWebPSupport();
+            var imageUrl = supportsWebP ? 
+                newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp') : 
+                newBgImage;
+            
+            // Create a style element to inject CSS for the pseudo-element
+            var styleId = 'bg-cycle-style';
+            var existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = '#bg:after { background-image: url("images/' + imageUrl + '") !important; }';
+            document.head.appendChild(style);
+            
+            updateStatus('Background cycled to: ' + imageUrl + (supportsWebP ? ' (WebP)' : ' (PNG)'));
+        }
+
+        function testBackground1() {
+            var styleId = 'bg-cycle-style';
+            var existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = '#bg:after { background-image: url("images/bg1.png") !important; }';
+            document.head.appendChild(style);
+            
+            updateStatus('Set background to bg1.png');
+        }
+
+        function testBackground2() {
+            var styleId = 'bg-cycle-style';
+            var existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = '#bg:after { background-image: url("images/bg2.png") !important; }';
+            document.head.appendChild(style);
+            
+            updateStatus('Set background to bg2.png');
+        }
+
+        function testWebP() {
+            var supportsWebP = testWebPSupport();
+            if (supportsWebP) {
+                var styleId = 'bg-cycle-style';
+                var existingStyle = document.getElementById(styleId);
+                if (existingStyle) {
+                    existingStyle.remove();
+                }
+                
+                var style = document.createElement('style');
+                style.id = styleId;
+                style.textContent = '#bg:after { background-image: url("images/bg1.webp") !important; }';
+                document.head.appendChild(style);
+                
+                updateStatus('Set background to bg1.webp (WebP test)');
+            } else {
+                updateStatus('WebP not supported, cannot test WebP images');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            testWebPSupport();
+            testImageLoading();
+            cycleBackground();
+        });
+    </script>
+</body>
+</html>

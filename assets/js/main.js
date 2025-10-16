@@ -18,25 +18,43 @@
 	var backgroundImages = ['bg1.png', 'bg2.png'];
 	var currentBgIndex = 0;
 	var bgCycleInterval;
+	var bgElement = document.getElementById('bg');
 
 	function cycleBackground() {
 		// Randomly select a background image
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
-		// Update the CSS custom property for the :after pseudo-element
-		document.documentElement.style.setProperty('--bg-image', 'url("images/' + newBgImage + '")');
-		
-		// Check if WebP is supported and update WebP version
-		if (document.body.classList.contains('webp-supported')) {
-			var webpImage = newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp');
-			document.documentElement.style.setProperty('--bg-image-webp', 'url("images/' + webpImage + '")');
+		// Check for WebP support
+		var supportsWebP = false;
+		var canvas = document.createElement('canvas');
+		if (canvas.getContext && canvas.getContext('2d')) {
+			supportsWebP = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
 		}
+		
+		// Use WebP version if supported, otherwise use PNG
+		var imageUrl = supportsWebP ? 
+			newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp') : 
+			newBgImage;
+		
+		// Create a style element to inject CSS for the pseudo-element
+		var styleId = 'bg-cycle-style';
+		var existingStyle = document.getElementById(styleId);
+		if (existingStyle) {
+			existingStyle.remove();
+		}
+		
+		var style = document.createElement('style');
+		style.id = styleId;
+		style.textContent = '#bg:after { background-image: url("images/' + imageUrl + '") !important; }';
+		document.head.appendChild(style);
+		
+		console.log('Background cycled to:', imageUrl, supportsWebP ? '(WebP)' : '(PNG)');
 	}
 
-	// Start background cycling when page loads
+	// Initialize background on page load
 	$window.on('load', function() {
-		// Initial background cycle
+		// Set initial background
 		cycleBackground();
 		
 		// Set up periodic cycling (every 30 seconds)
