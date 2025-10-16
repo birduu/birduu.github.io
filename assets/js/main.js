@@ -175,6 +175,16 @@
 		document.head.appendChild(style);
 		
 		console.log('Applied test background: images/bg1.png');
+		
+		// Also test if the image loads
+		var testImg = new Image();
+		testImg.onload = function() {
+			console.log('Test image loads successfully: images/bg1.png');
+		};
+		testImg.onerror = function() {
+			console.log('Test image failed to load: images/bg1.png');
+		};
+		testImg.src = 'images/bg1.png';
 	}
 
 	// Background carousel initialization (will be called from main load handler)
@@ -217,7 +227,53 @@
 				console.log('Manual background test triggered');
 				cycleBackground();
 			}
+			if (e.ctrlKey && e.keyCode === 84) { // Ctrl+T
+				e.preventDefault();
+				console.log('Manual background verification triggered');
+				verifyBackgroundSetup();
+			}
 		});
+	}
+
+	// Comprehensive background verification function
+	function verifyBackgroundSetup() {
+		console.log('=== Background Setup Verification ===');
+		
+		// Check if bg element exists
+		var bgElement = document.getElementById('bg');
+		console.log('BG element exists:', !!bgElement);
+		
+		if (bgElement) {
+			// Check computed styles
+			var bgStyle = window.getComputedStyle(bgElement);
+			var bgAfterStyle = window.getComputedStyle(bgElement, '::after');
+			
+			console.log('BG position:', bgStyle.position);
+			console.log('BG z-index:', bgStyle.zIndex);
+			console.log('BG after display:', bgAfterStyle.display);
+			console.log('BG after background-image:', bgAfterStyle.backgroundImage);
+			console.log('BG after background-size:', bgAfterStyle.backgroundSize);
+			console.log('BG after background-position:', bgAfterStyle.backgroundPosition);
+		}
+		
+		// Test image loading
+		console.log('Testing image loading...');
+		var images = ['images/bg1.png', 'images/bg2.png', 'images/bg1.avif', 'images/bg2.avif'];
+		images.forEach(function(imgPath) {
+			var img = new Image();
+			img.onload = function() {
+				console.log('✓ Image loads:', imgPath);
+			};
+			img.onerror = function() {
+				console.log('✗ Image fails:', imgPath);
+			};
+			img.src = imgPath;
+		});
+		
+		// Check AVIF support
+		console.log('AVIF support:', supportsAVIF);
+		
+		console.log('=== End Verification ===');
 	}
 
 	// Breakpoints.
