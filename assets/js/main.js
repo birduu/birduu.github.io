@@ -14,36 +14,147 @@
 		$main = $('#main'),
 		$main_articles = $main.children('article');
 
-	// Background cycling functionality
+	// Background cycling functionality with AVIF support and proper loading
 	var backgroundImages = ['bg1.png', 'bg2.png'];
 	var currentBgIndex = 0;
 	var bgCycleInterval;
 	var bgElement = document.getElementById('bg');
+	var supportsAVIF = false;
+	var preloadedImages = {};
+	var isTransitioning = false;
+
+	// Detect AVIF support once on page load
+	function detectAVIFSupport() {
+		var canvas = document.createElement('canvas');
+		if (canvas.getContext && canvas.getContext('2d')) {
+			try {
+				var avifDataURL = canvas.toDataURL('image/avif');
+				supportsAVIF = avifDataURL.indexOf('data:image/avif') === 0;
+			} catch (e) {
+				supportsAVIF = false;
+			}
+		}
+		console.log('AVIF support detected:', supportsAVIF);
+		return supportsAVIF;
+	}
+
+	// Preload all background images for smooth transitions
+	function preloadBackgroundImages() {
+		var imagesToLoad = [];
+		
+		// Create list of images to preload (both AVIF and PNG fallbacks)
+		backgroundImages.forEach(function(baseImage) {
+			if (supportsAVIF) {
+				imagesToLoad.push({
+					url: 'images/' + baseImage.replace(/\.(png|jpg|jpeg)$/i, '.avif'),
+					type: 'AVIF',
+					base: baseImage
+				});
+			}
+			imagesToLoad.push({
+				url: 'images/' + baseImage,
+				type: 'PNG',
+				base: baseImage
+			});
+		});
+
+		// Load each image
+		imagesToLoad.forEach(function(imageInfo) {
+			var img = new Image();
+			img.onload = function() {
+				preloadedImages[imageInfo.base + '_' + imageInfo.type] = true;
+				console.log('Preloaded:', imageInfo.url);
+			};
+			img.onerror = function() {
+				console.log('Failed to preload:', imageInfo.url);
+			};
+			img.src = imageInfo.url;
+		});
+	}
 
 	function cycleBackground() {
+		if (isTransitioning) return; // Prevent overlapping transitions
+		
+		isTransitioning = true;
+		
 		// Randomly select a background image
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
-		// Create a style element to inject CSS for the pseudo-element
-		var styleId = 'bg-cycle-style';
-		var existingStyle = document.getElementById(styleId);
-		if (existingStyle) {
-			existingStyle.remove();
+		// Determine which format to use
+		var imageUrl, format;
+		if (supportsAVIF) {
+			imageUrl = 'images/' + newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.avif');
+			format = 'AVIF';
+		} else {
+			imageUrl = 'images/' + newBgImage;
+			format = 'PNG';
 		}
 		
-		var style = document.createElement('style');
-		style.id = styleId;
-		style.textContent = '#bg:after { background-image: url("images/' + newBgImage + '") !important; }';
-		document.head.appendChild(style);
+		// Create a temporary image to ensure it's loaded before applying
+		var tempImg = new Image();
+		tempImg.onload = function() {
+			// Image is loaded, now apply it to the background
+			var styleId = 'bg-cycle-style';
+			var existingStyle = document.getElementById(styleId);
+			if (existingStyle) {
+				existingStyle.remove();
+			}
+			
+			var style = document.createElement('style');
+			style.id = styleId;
+			style.textContent = '#bg:after { background-image: url("' + imageUrl + '") !important; }';
+			document.head.appendChild(style);
+			
+			console.log('Background cycled to:', imageUrl, '(' + format + ')');
+			isTransitioning = false;
+		};
 		
-		console.log('Background cycled to:', newBgImage);
+		tempImg.onerror = function() {
+			// If AVIF fails, fallback to PNG
+			if (supportsAVIF && format === 'AVIF') {
+				console.log('AVIF failed, falling back to PNG');
+				imageUrl = 'images/' + newBgImage;
+				format = 'PNG';
+				
+				var fallbackImg = new Image();
+				fallbackImg.onload = function() {
+					var styleId = 'bg-cycle-style';
+					var existingStyle = document.getElementById(styleId);
+					if (existingStyle) {
+						existingStyle.remove();
+					}
+					
+					var style = document.createElement('style');
+					style.id = styleId;
+					style.textContent = '#bg:after { background-image: url("' + imageUrl + '") !important; }';
+					document.head.appendChild(style);
+					
+					console.log('Background cycled to:', imageUrl, '(' + format + ' - fallback)');
+					isTransitioning = false;
+				};
+				fallbackImg.src = imageUrl;
+			} else {
+				console.log('Failed to load background image:', imageUrl);
+				isTransitioning = false;
+			}
+		};
+		
+		tempImg.src = imageUrl;
 	}
 
 	// Initialize background on page load
 	$window.on('load', function() {
-		// Set initial background
-		cycleBackground();
+		// Detect AVIF support first
+		detectAVIFSupport();
+		
+		// Preload background images for smooth transitions
+		preloadBackgroundImages();
+		
+		// Set initial background after a short delay to allow preloading
+		setTimeout(function() {
+			cycleBackground();
+		}, 500);
 		
 		// Set up periodic cycling (every 30 seconds)
 		bgCycleInterval = setInterval(cycleBackground, 30000);
