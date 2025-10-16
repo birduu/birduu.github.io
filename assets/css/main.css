@@ -646,7 +646,7 @@ input, select, textarea {
 
 		.image:before {
 			pointer-events: none;
-			background-image: url("../../images/overlay.png");
+			background-image: url("../../images/overlay_optimized.jpg");
 			background-color: rgba(19, 21, 25, 0.5);
 			border-radius: 4px;
 			content: '';
@@ -657,6 +657,19 @@ input, select, textarea {
 			position: absolute;
 			top: 0;
 			width: 100%;
+		}
+		
+		/* WebP support detection */
+		.webp-supported .image:before {
+			background-image: url("../../images/overlay_optimized.webp");
+		}
+		
+		.webp-supported #bg:after {
+			background-image: var(--bg-image-webp, var(--bg-image, url("../../images/bg1_optimized.webp")));
+		}
+		
+		.webp-supported #bg:before {
+			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../images/overlay_optimized.webp");
 		}
 
 		.image img {
@@ -1188,7 +1201,7 @@ input, select, textarea {
 			-webkit-transition-delay: 0.75s;
 			-ms-transition-delay: 0.75s;
 			transition-delay: 0.75s;
-			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../images/overlay.png");
+			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../images/overlay_optimized.jpg");
 			background-size: auto,
  256px 256px;
 			background-position: center,
@@ -1207,7 +1220,7 @@ input, select, textarea {
 			-webkit-transition: -webkit-transform 0.325s ease-in-out, -webkit-filter 0.325s ease-in-out, background-image 1s ease-in-out;
 			-ms-transition: -ms-transform 0.325s ease-in-out, -ms-filter 0.325s ease-in-out, background-image 1s ease-in-out;
 			transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out, background-image 1s ease-in-out;
-			background-image: var(--bg-image-webp, var(--bg-image, url("../../images/bg1.png")));
+			background-image: var(--bg-image-webp, var(--bg-image, url("../../images/bg1_optimized.jpg")));
 			background-position: center;
 			background-size: cover;
 			background-repeat: no-repeat;

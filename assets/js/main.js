@@ -15,7 +15,7 @@
 		$main_articles = $main.children('article');
 
 	// Background cycling functionality
-	var backgroundImages = ['bg1.png', 'bg2.png'];
+	var backgroundImages = ['bg1_optimized.webp', 'bg2_optimized.webp'];
 	var currentBgIndex = 0;
 	var bgCycleInterval;
 
@@ -27,11 +27,9 @@
 		// Update the CSS custom property for the :after pseudo-element
 		document.documentElement.style.setProperty('--bg-image', 'url("../../images/' + newBgImage + '")');
 		
-		// Check if WebP is supported and update WebP version
-		if (document.body.classList.contains('webp-supported')) {
-			var webpImage = newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp');
-			document.documentElement.style.setProperty('--bg-image-webp', 'url("../../images/' + webpImage + '")');
-		}
+		// Since we're using optimized WebP images, we don't need to check for WebP support
+		// The images are already in the most compressed format
+		document.documentElement.style.setProperty('--bg-image-webp', 'url("../../images/' + newBgImage + '")');
 	}
 
 	// Start background cycling when page loads
