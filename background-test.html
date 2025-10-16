@@ -119,10 +119,10 @@
         
         <button class="test-button" onclick="testBackground1()">Test bg1.png</button>
         <button class="test-button" onclick="testBackground2()">Test bg2.png</button>
-        <button class="test-button" onclick="testAVIF()">Test AVIF Support</button>
+        <button class="test-button" onclick="testPNG()">Test PNG Support</button>
         <button class="test-button" onclick="cycleBackground()">Cycle Background</button>
         
-        <div class="status" id="avif-status">AVIF support: Testing...</div>
+        <div class="status" id="png-status">PNG support: Testing...</div>
         <div class="status" id="image-status">Image loading: Testing...</div>
     </div>
 
@@ -138,33 +138,31 @@
             document.getElementById('status').textContent = new Date().toLocaleTimeString() + ': ' + message;
         }
 
-        function testAVIFSupport() {
-            var supportsAVIF = false;
+        function testPNGSupport() {
+            var supportsPNG = false;
             var canvas = document.createElement('canvas');
             if (canvas.getContext && canvas.getContext('2d')) {
                 try {
-                    var avifDataURL = canvas.toDataURL('image/avif');
-                    supportsAVIF = avifDataURL.indexOf('data:image/avif') === 0;
+                    var pngDataURL = canvas.toDataURL('image/png');
+                    supportsPNG = pngDataURL.indexOf('data:image/png') === 0;
                 } catch (e) {
-                    supportsAVIF = false;
+                    supportsPNG = false;
                 }
             }
-            document.getElementById('avif-status').textContent = 'AVIF support: ' + (supportsAVIF ? 'Yes' : 'No');
-            return supportsAVIF;
+            document.getElementById('png-status').textContent = 'PNG support: ' + (supportsPNG ? 'Yes' : 'No');
+            return supportsPNG;
         }
 
         function testImageLoading() {
             var img1 = new Image();
             var img2 = new Image();
-            var img3 = new Image();
-            var img4 = new Image();
             var loadedCount = 0;
-            var totalImages = 4;
+            var totalImages = 2;
             
             function onLoad() {
                 loadedCount++;
                 if (loadedCount === totalImages) {
-                    document.getElementById('image-status').textContent = 'Image loading: All images (PNG + AVIF) loaded successfully';
+                    document.getElementById('image-status').textContent = 'Image loading: All PNG images loaded successfully';
                 }
             }
             
@@ -180,25 +178,11 @@
             img2.onload = onLoad;
             img2.onerror = () => onError(img2);
             img2.src = 'images/bg2.png';
-            
-            // Test AVIF files
-            img3.onload = onLoad;
-            img3.onerror = () => onError(img3);
-            img3.src = 'images/bg1.avif';
-            
-            img4.onload = onLoad;
-            img4.onerror = () => onError(img4);
-            img4.src = 'images/bg2.avif';
         }
 
         function cycleBackground() {
             var randomIndex = Math.floor(Math.random() * backgroundImages.length);
             var newBgImage = backgroundImages[randomIndex];
-            
-            var supportsAVIF = testAVIFSupport();
-            var imageUrl = supportsAVIF ? 
-                newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.avif') : 
-                newBgImage;
             
             // Create a style element to inject CSS for the pseudo-element
             var styleId = 'bg-cycle-style';
@@ -209,10 +193,10 @@
             
             var style = document.createElement('style');
             style.id = styleId;
-            style.textContent = '#bg:after { background-image: url("images/' + imageUrl + '") !important; }';
+            style.textContent = '#bg:after { background-image: url("images/' + newBgImage + '") !important; }';
             document.head.appendChild(style);
             
-            updateStatus('Background cycled to: ' + imageUrl + (supportsAVIF ? ' (AVIF)' : ' (PNG)'));
+            updateStatus('Background cycled to: ' + newBgImage);
         }
 
         function testBackground1() {
@@ -245,9 +229,9 @@
             updateStatus('Set background to bg2.png');
         }
 
-        function testAVIF() {
-            var supportsAVIF = testAVIFSupport();
-            if (supportsAVIF) {
+        function testPNG() {
+            var supportsPNG = testPNGSupport();
+            if (supportsPNG) {
                 var styleId = 'bg-cycle-style';
                 var existingStyle = document.getElementById(styleId);
                 if (existingStyle) {
@@ -256,18 +240,18 @@
                 
                 var style = document.createElement('style');
                 style.id = styleId;
-                style.textContent = '#bg:after { background-image: url("images/bg1.avif") !important; }';
+                style.textContent = '#bg:after { background-image: url("images/bg1.png") !important; }';
                 document.head.appendChild(style);
                 
-                updateStatus('Set background to bg1.avif (AVIF test)');
+                updateStatus('Set background to bg1.png (PNG test)');
             } else {
-                updateStatus('AVIF not supported, cannot test AVIF images');
+                updateStatus('PNG not supported, cannot test PNG images');
             }
         }
 
         // Initialize on page load
         window.addEventListener('load', function() {
-            testAVIFSupport();
+            testPNGSupport();
             testImageLoading();
             cycleBackground();
         });

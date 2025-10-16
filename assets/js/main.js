@@ -25,25 +25,6 @@
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
-		// Check for AVIF support
-		var supportsAVIF = false;
-		var canvas = document.createElement('canvas');
-		if (canvas.getContext && canvas.getContext('2d')) {
-			// Test AVIF support by trying to create an AVIF data URL
-			try {
-				var avifDataURL = canvas.toDataURL('image/avif');
-				supportsAVIF = avifDataURL.indexOf('data:image/avif') === 0;
-			} catch (e) {
-				// Fallback: check if AVIF format is supported
-				supportsAVIF = canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0;
-			}
-		}
-		
-		// Use AVIF version if supported, otherwise use PNG
-		var imageUrl = supportsAVIF ? 
-			newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.avif') : 
-			newBgImage;
-		
 		// Create a style element to inject CSS for the pseudo-element
 		var styleId = 'bg-cycle-style';
 		var existingStyle = document.getElementById(styleId);
@@ -53,10 +34,10 @@
 		
 		var style = document.createElement('style');
 		style.id = styleId;
-		style.textContent = '#bg:after { background-image: url("images/' + imageUrl + '") !important; }';
+		style.textContent = '#bg:after { background-image: url("images/' + newBgImage + '") !important; }';
 		document.head.appendChild(style);
 		
-		console.log('Background cycled to:', imageUrl, supportsAVIF ? '(AVIF)' : '(PNG)');
+		console.log('Background cycled to:', newBgImage);
 	}
 
 	// Initialize background on page load
