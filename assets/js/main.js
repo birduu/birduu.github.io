@@ -24,19 +24,25 @@
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
+		console.log('Cycling background to:', newBgImage);
+		
 		// Update the CSS custom property for the :after pseudo-element
-		document.documentElement.style.setProperty('--bg-image', 'url("../../images/' + newBgImage + '")');
+		document.documentElement.style.setProperty('--bg-image', 'url("images/' + newBgImage + '")');
 		
 		// Check if WebP is supported and update WebP version
 		if (document.body.classList.contains('webp-supported')) {
 			var webpImage = newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp');
-			document.documentElement.style.setProperty('--bg-image-webp', 'url("../../images/' + webpImage + '")');
+			console.log('WebP supported, using:', webpImage);
+			document.documentElement.style.setProperty('--bg-image-webp', 'url("images/' + webpImage + '")');
+		} else {
+			console.log('WebP not supported, using original format');
 		}
 	}
 
 	// Start background cycling when page loads
 	$window.on('load', function() {
 		// Initial background cycle
+		console.log('Starting background cycling...');
 		cycleBackground();
 		
 		// Set up periodic cycling (every 30 seconds)
@@ -46,6 +52,7 @@
 		$header.on('click', function(e) {
 			// Only trigger if clicking on the header itself, not on navigation links
 			if (e.target === this || $(e.target).closest('.content').length > 0) {
+				console.log('Manual background cycle triggered');
 				cycleBackground();
 			}
 		});

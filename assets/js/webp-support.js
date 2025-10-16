@@ -32,6 +32,11 @@
         var images = document.querySelectorAll('img[src$=".png"], img[src$=".jpg"], img[src$=".jpeg"]');
         
         images.forEach(function(img) {
+            // Skip if already wrapped in picture element
+            if (img.parentNode.tagName === 'PICTURE') {
+                return;
+            }
+            
             var originalSrc = img.src;
             var webpSrc = getWebPVersion(originalSrc);
             

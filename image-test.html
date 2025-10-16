@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loading Test</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .test-image {
+            max-width: 200px;
+            height: auto;
+            border: 2px solid #4a9eff;
+            margin: 10px;
+        }
+        .bg-test {
+            width: 100%;
+            height: 200px;
+            background-image: var(--bg-image-webp, var(--bg-image, url("images/bg1.png")));
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #4a9eff;
+            margin: 10px 0;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #2d5a2d; }
+        .error { background: #5a2d2d; }
+        .info { background: #2d4a5a; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div class="test-section">
+        <h2>Background Images Test</h2>
+        <div id="bg-status" class="status info">Testing background image loading...</div>
+        <div class="bg-test" id="bg-test"></div>
+        <button onclick="testBackgroundCycle()">Test Background Cycle</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Gallery Images Test</h2>
+        <div id="gallery-status" class="status info">Testing gallery image loading...</div>
+        <img src="images/VP/GALLERY/Cyberpunk2077 2025-06-27 21-49-07.png" alt="Test Image 1" class="test-image" onload="imageLoaded(this, 'gallery-status')" onerror="imageError(this, 'gallery-status')">
+        <img src="images/VP/GALLERY/Cyberpunk2077 2025-06-27 21-22-49.png" alt="Test Image 2" class="test-image" onload="imageLoaded(this, 'gallery-status')" onerror="imageError(this, 'gallery-status')">
+        <img src="images/VP/GALLERY/eldenring 2024-09-11 14-00-45.png" alt="Test Image 3" class="test-image" onload="imageLoaded(this, 'gallery-status')" onerror="imageError(this, 'gallery-status')">
+    </div>
+    
+    <div class="test-section">
+        <h2>WebP Images Test</h2>
+        <div id="webp-status" class="status info">Testing WebP image loading...</div>
+        <img src="images/VP/GALLERY/Cyberpunk2077 2025-06-27 21-49-07.webp" alt="WebP Test Image 1" class="test-image" onload="imageLoaded(this, 'webp-status')" onerror="imageError(this, 'webp-status')">
+        <img src="images/bg1.webp" alt="WebP Background Test" class="test-image" onload="imageLoaded(this, 'webp-status')" onerror="imageError(this, 'webp-status')">
+    </div>
+    
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div id="console-output" style="background: #000; padding: 10px; border-radius: 5px; font-family: monospace; white-space: pre-wrap;"></div>
+    </div>
+
+    <script>
+        let loadedImages = 0;
+        let errorImages = 0;
+        
+        function imageLoaded(img, statusId) {
+            loadedImages++;
+            updateStatus(statusId, `Image loaded: ${img.src.split('/').pop()}`, 'success');
+        }
+        
+        function imageError(img, statusId) {
+            errorImages++;
+            updateStatus(statusId, `Error loading: ${img.src.split('/').pop()}`, 'error');
+        }
+        
+        function updateStatus(statusId, message, type) {
+            const status = document.getElementById(statusId);
+            const timestamp = new Date().toLocaleTimeString();
+            status.innerHTML += `<br>[${timestamp}] ${message}`;
+            status.className = `status ${type}`;
+            
+            // Update console output
+            const consoleOutput = document.getElementById('console-output');
+            consoleOutput.textContent += `[${timestamp}] ${message}\n`;
+        }
+        
+        function testBackgroundCycle() {
+            const bgTest = document.getElementById('bg-test');
+            const randomIndex = Math.floor(Math.random() * 2);
+            const bgImages = ['bg1.png', 'bg2.png'];
+            const selectedBg = bgImages[randomIndex];
+            
+            console.log('Testing background cycle with:', selectedBg);
+            updateStatus('bg-status', `Testing background: ${selectedBg}`, 'info');
+            
+            // Set the background image
+            document.documentElement.style.setProperty('--bg-image', 'url("images/' + selectedBg + '")');
+            
+            // Check if WebP is supported
+            if (document.body.classList.contains('webp-supported')) {
+                const webpImage = selectedBg.replace(/\.(png|jpg|jpeg)$/i, '.webp');
+                document.documentElement.style.setProperty('--bg-image-webp', 'url("images/' + webpImage + '")');
+                updateStatus('bg-status', `WebP supported, using: ${webpImage}`, 'success');
+            } else {
+                updateStatus('bg-status', `WebP not supported, using: ${selectedBg}`, 'info');
+            }
+        }
+        
+        // Test WebP support
+        function testWebPSupport() {
+            const webp = new Image();
+            webp.onload = webp.onerror = function() {
+                if (webp.height === 2) {
+                    document.body.classList.add('webp-supported');
+                    updateStatus('webp-status', 'WebP is supported!', 'success');
+                } else {
+                    updateStatus('webp-status', 'WebP is not supported', 'error');
+                }
+            };
+            webp.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                updateStatus('bg-status', `Background test completed. Loaded: ${loadedImages}, Errors: ${errorImages}`, loadedImages > 0 ? 'success' : 'error');
+            }, 2000);
+            
+            testWebPSupport();
+        });
+    </script>
+</body>
+</html>
