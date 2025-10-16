@@ -15,8 +15,8 @@
 			/* Critical styles for immediate rendering */
 			body { margin: 0; padding: 0; background-color: #131519; color: #ffffff; font-family: 'Source Sans Pro', sans-serif; }
 			#wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 2; }
-			#header { padding: 6rem 2rem 4rem 2rem; width: 100%; max-width: 100%; text-align: center; }
-			#header .content .inner h1 { font-size: 2.5rem; margin: 0 0 1rem 0; font-weight: 700; }
+			#header { padding: 2rem 2rem 4rem 2rem; width: 100%; max-width: 100%; text-align: center; }
+			.main-title h1 { font-size: 2.5rem; margin: 0 0 1rem 0; font-weight: 700; }
 			ul.icons { cursor: default; list-style: none; padding-left: 0; margin: 2rem 0 0 0; }
 			ul.icons li { display: inline-block; padding: 0 0.75em 0 0; }
 			ul.icons li a { border-radius: 100%; box-shadow: inset 0 0 0 1px #ffffff; display: inline-block; height: 2.25rem; line-height: 2.25rem; width: 2.25rem; }
@@ -51,13 +51,17 @@
 
 				<!-- Header -->
 					<header id="header">
+						<!-- Main Title -->
+						<div class="main-title" style="text-align: center; padding: 2rem 0 1rem 0;">
+							<h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; font-weight: 700;">Daniel Bird Portfolio</h1>
+						</div>
+						
+						<!-- Horizontal Divider -->
+						<hr style="border: none; height: 1px; background: linear-gradient(to right, transparent, #ffffff, transparent); margin: 0 2rem 2rem 2rem;">
 						
 						<div class="content">
 							<div class="inner">
-						
-								<h1>Daniel Bird Portfolio</h1>
 								<ul class="icons">
-									
 									<li><a href="https://www.linkedin.com/in/daniel-bird-a6bb13192/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 									<li><a href="https://www.youtube.com/@hangaku8864" class="icon brands fa-youtube"><span class="label">YouTube</span></a></li>
 									<li><a href="https://www.picashot.co/hangaku" class="icon camera-icon"><img src="camera-icon.svg" alt="Camera" style="width: 16px; height: 16px; filter: invert(1);"><span class="label">Picashot</span></a></li>
@@ -335,6 +339,23 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 										}
 										60% {
 											transform: translateY(-5px);
+										}
+									}
+									
+									/* Responsive styles for main title */
+									@media (max-width: 768px) {
+										.main-title {
+											padding: 1rem 0 0.5rem 0 !important;
+										}
+										
+										.main-title h1 {
+											font-size: 2rem !important;
+										}
+									}
+									
+									@media (max-width: 480px) {
+										.main-title h1 {
+											font-size: 1.5rem !important;
 										}
 									}
 								</style>
