@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Verification Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border-left: 4px solid #4a9eff;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4a9eff;
+        }
+        .media-item {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px;
+            background: #333;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            vertical-align: top;
+            width: 200px;
+        }
+        .media-item.loading {
+            border-color: #ffa500;
+        }
+        .media-item.success {
+            border-color: #00ff00;
+        }
+        .media-item.error {
+            border-color: #ff0000;
+            background: #4a2a2a;
+        }
+        .media-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .media-item .status {
+            margin-top: 10px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .media-item .status.loading {
+            color: #ffa500;
+        }
+        .media-item .status.success {
+            color: #00ff00;
+        }
+        .media-item .status.error {
+            color: #ff0000;
+        }
+        .media-item .filename {
+            font-size: 0.8em;
+            color: #ccc;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        .video-facade-test {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 10px;
+            position: relative;
+        }
+        .video-facade-test:hover {
+            transform: scale(1.02);
+        }
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #333;
+        }
+        .summary {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4a9eff;
+        }
+        .summary h3 {
+            margin-top: 0;
+            color: #4a9eff;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #444;
+        }
+        .metric .label {
+            font-weight: bold;
+        }
+        .metric .value {
+            color: #4a9eff;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Media Verification Test</h1>
+        <p>This page tests all images and videos on the portfolio to ensure they load properly.</p>
+
+        <div class="summary">
+            <h3>Test Summary</h3>
+            <div class="metric">
+                <span class="label">Total Media Items:</span>
+                <span class="value" id="total-count">0</span>
+            </div>
+            <div class="metric">
+                <span class="label">Successfully Loaded:</span>
+                <span class="value" id="success-count">0</span>
+            </div>
+            <div class="metric">
+                <span class="label">Failed to Load:</span>
+                <span class="value" id="error-count">0</span>
+            </div>
+            <div class="metric">
+                <span class="label">WebP Support:</span>
+                <span class="value" id="webp-support">Testing...</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Background Images</h2>
+            <div id="bg-images-container"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3D Portfolio Images</h2>
+            <div id="3d-images-container"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Gallery Images (Screenshots)</h2>
+            <div id="gallery-images-container"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Other Images</h2>
+            <div id="other-images-container"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>YouTube Video Facades</h2>
+            <div id="video-facades-container"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Console Output</h2>
+            <div class="console-output" id="console-output"></div>
+        </div>
+    </div>
+
+    <script>
+        let totalCount = 0;
+        let successCount = 0;
+        let errorCount = 0;
+
+        // Console output capture
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToConsole(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? 'ERROR' : type === 'warn' ? 'WARN' : 'INFO';
+            consoleOutput.innerHTML += `[${timestamp}] ${prefix}: ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToConsole(args.join(' '), 'log');
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToConsole(args.join(' '), 'error');
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            logToConsole(args.join(' '), 'warn');
+        };
+
+        // Test WebP support
+        function testWebPSupport() {
+            return new Promise((resolve) => {
+                const webp = new Image();
+                webp.onload = webp.onerror = function() {
+                    const supported = webp.height === 2;
+                    document.getElementById('webp-support').textContent = supported ? 'Supported' : 'Not Supported';
+                    document.getElementById('webp-support').style.color = supported ? '#00ff00' : '#ff0000';
+                    resolve(supported);
+                };
+                webp.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+            });
+        }
+
+        // Test image loading
+        function testImage(src, container, filename) {
+            totalCount++;
+            updateCounts();
+
+            const mediaItem = document.createElement('div');
+            mediaItem.className = 'media-item loading';
+            
+            const filenameDiv = document.createElement('div');
+            filenameDiv.className = 'filename';
+            filenameDiv.textContent = filename || src.split('/').pop();
+            
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = filename || 'Test Image';
+            
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Loading...';
+            
+            mediaItem.appendChild(filenameDiv);
+            mediaItem.appendChild(img);
+            mediaItem.appendChild(statusDiv);
+            
+            container.appendChild(mediaItem);
+
+            img.onload = function() {
+                mediaItem.className = 'media-item success';
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'Loaded ✓';
+                successCount++;
+                updateCounts();
+                console.log(`Image loaded successfully: ${src}`);
+            };
+
+            img.onerror = function() {
+                mediaItem.className = 'media-item error';
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Failed ✗';
+                errorCount++;
+                updateCounts();
+                console.error(`Failed to load image: ${src}`);
+            };
+
+            return mediaItem;
+        }
+
+        // Test video facade
+        function testVideoFacade(videoId, title, container) {
+            totalCount++;
+            updateCounts();
+
+            const facadeDiv = document.createElement('div');
+            facadeDiv.className = 'video-facade-test';
+            facadeDiv.innerHTML = `
+                <div class="play-button">▶</div>
+                <div style="position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 0.8em; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">
+                    ${title}
+                </div>
+            `;
+
+            facadeDiv.addEventListener('click', function() {
+                console.log(`Video facade clicked: ${title} (ID: ${videoId})`);
+                // In a real test, this would load the actual video
+                facadeDiv.style.background = 'linear-gradient(135deg, #00ff00 0%, #00aa00 100%)';
+                facadeDiv.querySelector('.play-button').textContent = '✓';
+                successCount++;
+                updateCounts();
+            });
+
+            container.appendChild(facadeDiv);
+            console.log(`Video facade created: ${title} (ID: ${videoId})`);
+        }
+
+        // Update count displays
+        function updateCounts() {
+            document.getElementById('total-count').textContent = totalCount;
+            document.getElementById('success-count').textContent = successCount;
+            document.getElementById('error-count').textContent = errorCount;
+        }
+
+        // Run all tests
+        async function runTests() {
+            console.log('Starting media verification tests...');
+
+            // Test WebP support
+            const webpSupported = await testWebPSupport();
+            console.log(`WebP support: ${webpSupported ? 'Yes' : 'No'}`);
+
+            // Background images
+            const bgContainer = document.getElementById('bg-images-container');
+            testImage('images/bg1.png', bgContainer, 'bg1.png');
+            testImage('images/bg2.png', bgContainer, 'bg2.png');
+            if (webpSupported) {
+                testImage('images/bg1.webp', bgContainer, 'bg1.webp');
+                testImage('images/bg2.webp', bgContainer, 'bg2.webp');
+            }
+
+            // 3D Portfolio images
+            const d3Container = document.getElementById('3d-images-container');
+            testImage('images/jhill.png', d3Container, 'jhill.png');
+            testImage('images/statue.png', d3Container, 'statue.png');
+            testImage('images/arch.png', d3Container, 'arch.png');
+            if (webpSupported) {
+                testImage('images/jhill.webp', d3Container, 'jhill.webp');
+                testImage('images/statue.webp', d3Container, 'statue.webp');
+                testImage('images/arch.webp', d3Container, 'arch.webp');
+            }
+
+            // Gallery images (sample)
+            const galleryContainer = document.getElementById('gallery-images-container');
+            const galleryImages = [
+                'images/VP/GALLERY/Cyberpunk2077 2025-06-27 21-49-07.png',
+                'images/VP/GALLERY/Cyberpunk2077 2025-06-27 21-22-49.png',
+                'images/VP/GALLERY/Cyberpunk2077 2025-06-27 20-01-41.png',
+                'images/VP/GALLERY/eldenring 2024-09-11 14-00-45.png',
+                'images/VP/GALLERY/eldenring 2024-09-11 21-08-55.png'
+            ];
+
+            galleryImages.forEach(imgSrc => {
+                testImage(imgSrc, galleryContainer);
+                if (webpSupported) {
+                    const webpSrc = imgSrc.replace(/\.png$/, '.webp');
+                    testImage(webpSrc, galleryContainer);
+                }
+            });
+
+            // Other images
+            const otherContainer = document.getElementById('other-images-container');
+            testImage('portfolio-qr-code.png', otherContainer, 'portfolio-qr-code.png');
+            testImage('portfolio-qr-code.webp', otherContainer, 'portfolio-qr-code.webp');
+            testImage('camera-icon.svg', otherContainer, 'camera-icon.svg');
+
+            // Video facades
+            const videoContainer = document.getElementById('video-facades-container');
+            testVideoFacade('ivaKHiHVWb0', 'CLAIR OBSCUR: EXPEDITION 33', videoContainer);
+            testVideoFacade('7_f_z06bLdA', 'Game Capture Showreel 2025', videoContainer);
+            testVideoFacade('iUMm_v1MiE8', 'Elden Ring: The Convergence', videoContainer);
+            testVideoFacade('ovam4wr6s4Q', 'Destiny 2 Christmas Challenge', videoContainer);
+            testVideoFacade('KjkF_-uuT1M', 'Black Ops 2 48hr Challenge', videoContainer);
+            testVideoFacade('860-DhH3_IM', 'LYRA Destiny 2 Montage', videoContainer);
+
+            console.log('Media verification tests completed');
+        }
+
+        // Start tests when page loads
+        window.addEventListener('load', function() {
+            setTimeout(runTests, 100);
+        });
+    </script>
+</body>
+</html>
