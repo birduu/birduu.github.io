@@ -25,16 +25,23 @@
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
-		// Check for WebP support
-		var supportsWebP = false;
+		// Check for AVIF support
+		var supportsAVIF = false;
 		var canvas = document.createElement('canvas');
 		if (canvas.getContext && canvas.getContext('2d')) {
-			supportsWebP = canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+			// Test AVIF support by trying to create an AVIF data URL
+			try {
+				var avifDataURL = canvas.toDataURL('image/avif');
+				supportsAVIF = avifDataURL.indexOf('data:image/avif') === 0;
+			} catch (e) {
+				// Fallback: check if AVIF format is supported
+				supportsAVIF = canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0;
+			}
 		}
 		
-		// Use WebP version if supported, otherwise use PNG
-		var imageUrl = supportsWebP ? 
-			newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp') : 
+		// Use AVIF version if supported, otherwise use PNG
+		var imageUrl = supportsAVIF ? 
+			newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.avif') : 
 			newBgImage;
 		
 		// Create a style element to inject CSS for the pseudo-element
@@ -49,7 +56,7 @@
 		style.textContent = '#bg:after { background-image: url("images/' + imageUrl + '") !important; }';
 		document.head.appendChild(style);
 		
-		console.log('Background cycled to:', imageUrl, supportsWebP ? '(WebP)' : '(PNG)');
+		console.log('Background cycled to:', imageUrl, supportsAVIF ? '(AVIF)' : '(PNG)');
 	}
 
 	// Initialize background on page load
