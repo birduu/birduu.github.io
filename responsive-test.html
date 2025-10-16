@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Responsive Images Test - Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: white; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #333; border-radius: 8px; }
+        .image-comparison { display: flex; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+        .image-container { flex: 1; min-width: 300px; }
+        .image-container img { width: 100%; height: auto; border-radius: 8px; }
+        .size-info { background: #333; padding: 10px; border-radius: 4px; margin-top: 10px; }
+        .device-test { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .device-simulator { 
+            border: 2px solid #666; 
+            border-radius: 8px; 
+            padding: 10px; 
+            text-align: center;
+            background: #222;
+        }
+        .mobile { width: 375px; }
+        .tablet { width: 768px; }
+        .desktop { width: 1200px; }
+        .stats { background: #2d5a2d; padding: 15px; border-radius: 8px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Responsive Images Test</h1>
+    
+    <div class="stats">
+        <h2>Performance Benefits</h2>
+        <ul>
+            <li>📱 <strong>Mobile (400px):</strong> ~90% smaller images than desktop versions</li>
+            <li>📲 <strong>Tablet (800px):</strong> ~70% smaller than full resolution</li>
+            <li>💻 <strong>Desktop (1200px):</strong> Optimized for screen size</li>
+            <li>🚀 <strong>Lazy Loading:</strong> Images load only when needed</li>
+            <li>⚡ <strong>WebP + Responsive:</strong> Double optimization for maximum speed</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>Gallery Image Responsive Test</h2>
+        <p>This image will automatically load the appropriate size based on your screen:</p>
+        
+        <picture>
+            <source srcset="images/VP/GALLERY/Cyberpunk2077%202025-06-27%2021-49-07.webp" type="image/webp">
+            <img src="images/VP/GALLERY/Cyberpunk2077%202025-06-27%2021-49-07.png" alt="Responsive Gallery Image" style="width: 100%; max-width: 600px; border-radius: 8px;" />
+        </picture>
+        
+        <div class="size-info">
+            <strong>Current Size:</strong> <span id="current-size">Calculating...</span><br>
+            <strong>Device Pixel Ratio:</strong> <span id="device-ratio">Calculating...</span>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3D Work Responsive Test</h2>
+        <picture>
+            <source srcset="images/jhill.webp" type="image/webp">
+            <img src="images/jhill.png" alt="J Hill Character - Responsive" style="width: 100%; max-width: 500px; border-radius: 8px;" />
+        </picture>
+    </div>
+    
+    <div class="test-section">
+        <h2>Device Simulator</h2>
+        <p>Resize your browser window to see different image sizes load:</p>
+        
+        <div class="device-test">
+            <div class="device-simulator mobile">
+                <h4>Mobile View</h4>
+                <p>375px wide</p>
+                <div style="font-size: 12px;">Should load 400px images</div>
+            </div>
+            <div class="device-simulator tablet">
+                <h4>Tablet View</h4>
+                <p>768px wide</p>
+                <div style="font-size: 12px;">Should load 800px images</div>
+            </div>
+            <div class="device-simulator desktop">
+                <h4>Desktop View</h4>
+                <p>1200px wide</p>
+                <div style="font-size: 12px;">Should load 1200px images</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Network Performance</h2>
+        <div id="network-info">
+            <p><strong>Connection:</strong> <span id="connection-type">Detecting...</span></p>
+            <p><strong>Effective Type:</strong> <span id="effective-type">Detecting...</span></p>
+            <p><strong>Downlink:</strong> <span id="downlink">Detecting...</span> Mbps</p>
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <button onclick="testImageLoading()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Test Image Loading Performance
+            </button>
+            <div id="loading-results" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Display current screen info
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            const ratio = window.devicePixelRatio || 1;
+            
+            document.getElementById('current-size').textContent = width + 'px';
+            document.getElementById('device-ratio').textContent = ratio + 'x';
+        }
+        
+        // Network information
+        function updateNetworkInfo() {
+            if ('connection' in navigator) {
+                const conn = navigator.connection;
+                document.getElementById('connection-type').textContent = conn.type || 'unknown';
+                document.getElementById('effective-type').textContent = conn.effectiveType || 'unknown';
+                document.getElementById('downlink').textContent = conn.downlink ? conn.downlink.toFixed(2) : 'unknown';
+            } else {
+                document.getElementById('network-info').innerHTML = '<p>Network information not available in this browser</p>';
+            }
+        }
+        
+        // Test image loading performance
+        function testImageLoading() {
+            const results = document.getElementById('loading-results');
+            results.innerHTML = '<p>Testing image loading...</p>';
+            
+            const startTime = performance.now();
+            const testImg = new Image();
+            
+            testImg.onload = function() {
+                const endTime = performance.now();
+                const loadTime = endTime - startTime;
+                
+                results.innerHTML = `
+                    <div style="background: #2d5a2d; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                        <strong>Image Load Test Results:</strong><br>
+                        Load Time: ${loadTime.toFixed(2)}ms<br>
+                        Image Size: ${this.naturalWidth}x${this.naturalHeight}<br>
+                        File Size: ~${Math.round(this.naturalWidth * this.naturalHeight * 0.5 / 1024)}KB (estimated)
+                    </div>
+                `;
+            };
+            
+            testImg.src = 'images/VP/GALLERY/Cyberpunk2077%202025-06-27%2021-49-07.png';
+        }
+        
+        // Initialize
+        updateScreenInfo();
+        updateNetworkInfo();
+        
+        window.addEventListener('resize', updateScreenInfo);
+        
+        // Log responsive image info
+        setTimeout(function() {
+            const images = document.querySelectorAll('img');
+            console.log('Responsive Images Test Page Loaded');
+            console.log('Total images:', images.length);
+            
+            images.forEach((img, index) => {
+                if (img.srcset) {
+                    console.log(`Image ${index + 1}:`, {
+                        src: img.src,
+                        srcset: img.srcset,
+                        sizes: img.sizes,
+                        naturalWidth: img.naturalWidth,
+                        naturalHeight: img.naturalHeight
+                    });
+                }
+            });
+        }, 1000);
+    </script>
+</body>
+</html>

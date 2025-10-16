@@ -941,6 +941,38 @@ input, select, textarea {
 			vertical-align: middle;
 		}
 
+	/* Responsive Images */
+		.responsive-image,
+		.responsive-picture img {
+			width: 100%;
+			height: auto;
+			transition: opacity 0.3s ease;
+		}
+
+		.responsive-picture {
+			display: block;
+		}
+
+		/* Optimize loading for responsive images */
+		.responsive-image[loading="lazy"],
+		.responsive-picture img[loading="lazy"] {
+			opacity: 0;
+		}
+
+		.responsive-image[loading="lazy"].loaded,
+		.responsive-picture img[loading="lazy"].loaded {
+			opacity: 1;
+		}
+
+		/* Responsive image containers */
+		.gallery-grid .responsive-picture {
+			width: 100%;
+		}
+
+		.image-gallery-3d .responsive-picture {
+			width: 100%;
+		}
+
 /* Table */
 
 	.table-wrapper {
