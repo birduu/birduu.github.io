@@ -924,9 +924,22 @@ input, select, textarea {
 					background-color: rgba(255, 255, 255, 0.075);
 				}
 
-				ul.icons li a:active {
-					background-color: rgba(255, 255, 255, 0.175);
-				}
+			ul.icons li a:active {
+				background-color: rgba(255, 255, 255, 0.175);
+			}
+
+		/* Camera icon specific styling for proper centering */
+		ul.icons li a.camera-icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		ul.icons li a.camera-icon img {
+			display: block;
+			margin: 0;
+			vertical-align: middle;
+		}
 
 /* Table */
 
