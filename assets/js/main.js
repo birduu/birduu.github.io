@@ -143,8 +143,8 @@
 		tempImg.src = imageUrl;
 	}
 
-	// Initialize background on page load
-	$window.on('load', function() {
+	// Background carousel initialization (will be called from main load handler)
+	function initializeBackgroundCarousel() {
 		// Detect AVIF support first
 		detectAVIFSupport();
 		
@@ -154,7 +154,7 @@
 		// Set initial background after a short delay to allow preloading
 		setTimeout(function() {
 			cycleBackground();
-		}, 500);
+		}, 600); // Increased delay to ensure is-preload is removed first
 		
 		// Set up periodic cycling (every 30 seconds)
 		bgCycleInterval = setInterval(cycleBackground, 30000);
@@ -166,7 +166,7 @@
 				cycleBackground();
 			}
 		});
-	});
+	}
 
 	// Breakpoints.
 		breakpoints({
@@ -182,6 +182,9 @@
 		$window.on('load', function() {
 			window.setTimeout(function() {
 				$body.removeClass('is-preload');
+				
+				// Initialize background carousel after removing is-preload
+				initializeBackgroundCarousel();
 			}, 100);
 		});
 

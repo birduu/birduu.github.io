@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Background Debug Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #131519;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        
+        #bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+        
+        #bg:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("images/bg1.png");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 1;
+            transition: background-image 1s ease-in-out;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .debug-info {
+            background: rgba(0,0,0,0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            font-family: monospace;
+        }
+        
+        button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Background Carousel Debug Test</h1>
+        
+        <div class="debug-info">
+            <div>AVIF Support: <span id="avif-status">Testing...</span></div>
+            <div>Current Background: <span id="current-bg">None</span></div>
+            <div>Last Console Log: <span id="last-log">None</span></div>
+        </div>
+        
+        <button onclick="testCycle()">Test Cycle Background</button>
+        <button onclick="testAVIF()">Test AVIF</button>
+        <button onclick="testPNG()">Test PNG</button>
+        <button onclick="checkElements()">Check Elements</button>
+        
+        <div class="debug-info">
+            <div>Files to test:</div>
+            <div>- bg1.png (4.1 MB)</div>
+            <div>- bg2.png (4.5 MB)</div>
+            <div>- bg1.avif (19 KB)</div>
+            <div>- bg2.avif (32 KB)</div>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
+
+    <script>
+        // Background cycling functionality with AVIF support and proper loading
+        var backgroundImages = ['bg1.png', 'bg2.png'];
+        var currentBgIndex = 0;
+        var bgCycleInterval;
+        var bgElement = document.getElementById('bg');
+        var supportsAVIF = false;
+        var preloadedImages = {};
+        var isTransitioning = false;
+
+        // Detect AVIF support once on page load
+        function detectAVIFSupport() {
+            var canvas = document.createElement('canvas');
+            if (canvas.getContext && canvas.getContext('2d')) {
+                try {
+                    var avifDataURL = canvas.toDataURL('image/avif');
+                    supportsAVIF = avifDataURL.indexOf('data:image/avif') === 0;
+                } catch (e) {
+                    supportsAVIF = false;
+                }
+            }
+            console.log('AVIF support detected:', supportsAVIF);
+            document.getElementById('avif-status').textContent = supportsAVIF ? 'Yes' : 'No';
+            return supportsAVIF;
+        }
+
+        function cycleBackground() {
+            if (isTransitioning) return; // Prevent overlapping transitions
+            
+            isTransitioning = true;
+            
+            // Randomly select a background image
+            var randomIndex = Math.floor(Math.random() * backgroundImages.length);
+            var newBgImage = backgroundImages[randomIndex];
+            
+            // Determine which format to use
+            var imageUrl, format;
+            if (supportsAVIF) {
+                imageUrl = 'images/' + newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.avif');
+                format = 'AVIF';
+            } else {
+                imageUrl = 'images/' + newBgImage;
+                format = 'PNG';
+            }
+            
+            console.log('Attempting to load:', imageUrl, '(' + format + ')');
+            document.getElementById('last-log').textContent = 'Loading: ' + imageUrl;
+            
+            // Create a temporary image to ensure it's loaded before applying
+            var tempImg = new Image();
+            tempImg.onload = function() {
+                // Image is loaded, now apply it to the background
+                var styleId = 'bg-cycle-style';
+                var existingStyle = document.getElementById(styleId);
+                if (existingStyle) {
+                    existingStyle.remove();
+                }
+                
+                var style = document.createElement('style');
+                style.id = styleId;
+                style.textContent = '#bg:after { background-image: url("' + imageUrl + '") !important; }';
+                document.head.appendChild(style);
+                
+                console.log('Background cycled to:', imageUrl, '(' + format + ')');
+                document.getElementById('current-bg').textContent = imageUrl + ' (' + format + ')';
+                document.getElementById('last-log').textContent = 'Success: ' + imageUrl;
+                isTransitioning = false;
+            };
+            
+            tempImg.onerror = function() {
+                // If AVIF fails, fallback to PNG
+                if (supportsAVIF && format === 'AVIF') {
+                    console.log('AVIF failed, falling back to PNG');
+                    imageUrl = 'images/' + newBgImage;
+                    format = 'PNG';
+                    
+                    document.getElementById('last-log').textContent = 'AVIF failed, trying PNG: ' + imageUrl;
+                    
+                    var fallbackImg = new Image();
+                    fallbackImg.onload = function() {
+                        var styleId = 'bg-cycle-style';
+                        var existingStyle = document.getElementById(styleId);
+                        if (existingStyle) {
+                            existingStyle.remove();
+                        }
+                        
+                        var style = document.createElement('style');
+                        style.id = styleId;
+                        style.textContent = '#bg:after { background-image: url("' + imageUrl + '") !important; }';
+                        document.head.appendChild(style);
+                        
+                        console.log('Background cycled to:', imageUrl, '(' + format + ' - fallback)');
+                        document.getElementById('current-bg').textContent = imageUrl + ' (' + format + ' - fallback)';
+                        document.getElementById('last-log').textContent = 'Success (fallback): ' + imageUrl;
+                        isTransitioning = false;
+                    };
+                    fallbackImg.src = imageUrl;
+                } else {
+                    console.log('Failed to load background image:', imageUrl);
+                    document.getElementById('last-log').textContent = 'Failed: ' + imageUrl;
+                    isTransitioning = false;
+                }
+            };
+            
+            tempImg.src = imageUrl;
+        }
+
+        function testCycle() {
+            console.log('Manual cycle test triggered');
+            cycleBackground();
+        }
+
+        function testAVIF() {
+            console.log('Testing AVIF directly');
+            var styleId = 'bg-cycle-style';
+            var existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = '#bg:after { background-image: url("images/bg1.avif") !important; }';
+            document.head.appendChild(style);
+            
+            document.getElementById('current-bg').textContent = 'bg1.avif (manual)';
+            document.getElementById('last-log').textContent = 'Manual AVIF test';
+        }
+
+        function testPNG() {
+            console.log('Testing PNG directly');
+            var styleId = 'bg-cycle-style';
+            var existingStyle = document.getElementById(styleId);
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = '#bg:after { background-image: url("images/bg2.png") !important; }';
+            document.head.appendChild(style);
+            
+            document.getElementById('current-bg').textContent = 'bg2.png (manual)';
+            document.getElementById('last-log').textContent = 'Manual PNG test';
+        }
+
+        function checkElements() {
+            console.log('Checking elements...');
+            var bgElement = document.getElementById('bg');
+            var bgAfter = window.getComputedStyle(bgElement, '::after');
+            
+            console.log('BG element:', bgElement);
+            console.log('BG after computed style:', bgAfter);
+            console.log('BG after background-image:', bgAfter.backgroundImage);
+            
+            document.getElementById('last-log').textContent = 'Elements checked - see console';
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing...');
+            
+            // Detect AVIF support first
+            detectAVIFSupport();
+            
+            // Set initial background after a short delay
+            setTimeout(function() {
+                console.log('Setting initial background...');
+                cycleBackground();
+            }, 500);
+            
+            // Set up periodic cycling (every 10 seconds for testing)
+            bgCycleInterval = setInterval(cycleBackground, 10000);
+        });
+    </script>
+</body>
+</html>
