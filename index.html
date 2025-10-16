@@ -30,7 +30,8 @@
 		<link rel="dns-prefetch" href="https://www.linkedin.com" />
 		<link rel="dns-prefetch" href="https://www.artstation.com" />
 		
-		<!-- Font optimization -->
+		<!-- Font optimization with lazy loading facade -->
+		<div class="font-facade" data-font-url="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" data-font-family="Source Sans Pro" style="display: none;"></div>
 		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
 		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" /></noscript>
 		
@@ -58,10 +59,10 @@
 								<h1>Daniel Bird Portfolio</h1>
 								<ul class="icons">
 									
-									<li><a href="https://www.linkedin.com/in/daniel-bird-a6bb13192/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://www.youtube.com/@hangaku8864" class="icon brands fa-youtube"><span class="label">YouTube</span></a></li>
-									<li><a href="https://www.picashot.co/hangaku" class="icon camera-icon"><img src="camera-icon.svg" alt="Camera" style="width: 16px; height: 16px; filter: invert(1);"><span class="label">Picashot</span></a></li>
-									<li><a href="https://www.artstation.com/daniel_bird" class="icon brands fa-artstation"><span class="label">ArtStation</span></a></li>
+									<li><a href="https://www.linkedin.com/in/daniel-bird-a6bb13192/" class="icon brands fa-linkedin social-facade" data-platform="linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://www.youtube.com/@hangaku8864" class="icon brands fa-youtube social-facade" data-platform="youtube"><span class="label">YouTube</span></a></li>
+									<li><a href="https://www.picashot.co/hangaku" class="icon camera-icon social-facade" data-platform="picashot"><img src="camera-icon.svg" alt="Camera" style="width: 16px; height: 16px; filter: invert(1);"><span class="label">Picashot</span></a></li>
+									<li><a href="https://www.artstation.com/daniel_bird" class="icon brands fa-artstation social-facade" data-platform="artstation"><span class="label">ArtStation</span></a></li>
 									<li><a href="mailto:dnlbird4@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li>
 								</ul>
 								
@@ -70,7 +71,7 @@
 									<div class="expedition-video-container" style="max-width: 600px; width: 100%;">
 										<div style="font-size:1em; color:#fff; background:#222; padding:0.3em 0.7em; border-radius:6px; margin-bottom:0.8em; text-align:center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)</div>
 										<div class="expedition-video-wrapper" style="position: relative; width: 100%;">
-											<iframe src="https://www.youtube.com/embed/ivaKHiHVWb0" title="CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width: 100%; height: 400px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.3);"></iframe>
+											<div class="youtube-facade" data-video-id="ivaKHiHVWb0" data-title="CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)"></div>
 										</div>
 									</div>
 								</div>
@@ -198,38 +199,38 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 									<div class="video-container" style="margin-bottom:1em;">
 										<div style="font-size:1em; color:#fff; background:#222; padding:0.3em 0.7em; border-radius:4px; margin-bottom:0.5em;">CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)</div>
 										<div class="video-wrapper">
-											<iframe src="https://www.youtube.com/embed/ivaKHiHVWb0" title="CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+											<div class="youtube-facade" data-video-id="ivaKHiHVWb0" data-title="CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)"></div>
 										</div>
 									</div>
 									<div class="video-container" style="margin-bottom:1em;">
 										<div style="font-size:1em; color:#fff; background:#222; padding:0.3em 0.7em; border-radius:4px; margin-bottom:0.5em;">Game Capture and Editing Showreel (2025) | Daniel Bird</div>
 										<div class="video-wrapper">
-											<iframe src="https://www.youtube.com/embed/7_f_z06bLdA" title="Game Capture and Editing Showreel (2025) | Daniel Bird" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+											<div class="youtube-facade" data-video-id="7_f_z06bLdA" data-title="Game Capture and Editing Showreel (2025) | Daniel Bird"></div>
 										</div>
 									</div>
 									<div class="video-container" style="margin-bottom:1em;">
 										<div style="font-size:1em; color:#fff; background:#222; padding:0.3em 0.7em; border-radius:4px; margin-bottom:0.5em;">Elden Ring: The Convergence Trailer</div>
 										<div class="video-wrapper">
-											<iframe src="https://www.youtube.com/embed/iUMm_v1MiE8" title="Elden Ring: The Convergence | The Nox and the Underground (Fan trailer) | Shot with IGCS" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+											<div class="youtube-facade" data-video-id="iUMm_v1MiE8" data-title="Elden Ring: The Convergence | The Nox and the Underground (Fan trailer) | Shot with IGCS"></div>
 										</div>
 									</div>
 									<div class="video-grid">
 										<div class="video-container">
 											<div style="font-size:0.95em; color:#fff; background:#222; padding:0.2em 0.5em; border-radius:4px; margin-bottom:0.4em;">"Where did your love go?" Christmas Editing Challenge (Destiny 2)</div>
 											<div class="video-wrapper">
-												<iframe src="https://www.youtube.com/embed/ovam4wr6s4Q" title="Where did your love go? (christmas hc)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+												<div class="youtube-facade" data-video-id="ovam4wr6s4Q" data-title="Where did your love go? (christmas hc)"></div>
 											</div>
 										</div>
 										<div class="video-container">
 											<div style="font-size:0.95em; color:#fff; background:#222; padding:0.2em 0.5em; border-radius:4px; margin-bottom:0.4em;">"lust to love" 48hr Editing Challenge (Black Ops 2)</div>
 											<div class="video-wrapper">
-												<iframe src="https://www.youtube.com/embed/KjkF_-uuT1M" title="lust to love (48hc) (learning after effects)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+												<div class="youtube-facade" data-video-id="KjkF_-uuT1M" data-title="lust to love (48hc) (learning after effects)"></div>
 											</div>
 										</div>
 										<div class="video-container">
 											<div style="font-size:0.95em; color:#fff; background:#222; padding:0.2em 0.5em; border-radius:4px; margin-bottom:0.4em;">"LYRA" Destiny 2 Montage</div>
 											<div class="video-wrapper">
-												<iframe src="https://www.youtube.com/embed/860-DhH3_IM" title="LYRA | A Destiny 2 Montage #MOTW #TakeTheStage" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+												<div class="youtube-facade" data-video-id="860-DhH3_IM" data-title="LYRA | A Destiny 2 Montage #MOTW #TakeTheStage"></div>
 											</div>
 										</div>
 									</div>
@@ -267,7 +268,7 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 									}
 								</style>
 								<div style="text-align:center; margin-top: 2em;">
-									<a href="https://www.youtube.com/@hangaku8864" target="_blank" style="display:inline-block; padding:1em 2em; background:#1b1f22; color:#fff; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.2em;">Visit My YouTube Channel</a>
+									<a href="https://www.youtube.com/@hangaku8864" target="_blank" class="social-facade" data-platform="youtube" style="display:inline-block; padding:1em 2em; background:#1b1f22; color:#fff; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.2em;">Visit My YouTube Channel</a>
 								</div>
 							
 								</article>
@@ -467,7 +468,7 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 									</script>
 								</div>
 								<div style="text-align:center; margin-top: 2em;">
-									<a href="https://www.picashot.co/hangaku" target="_blank" style="display:inline-block; padding:1em 2em; background:#1b1f22; color:#fff; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.2em;">View Full Gallery</a>
+									<a href="https://www.picashot.co/hangaku" target="_blank" class="social-facade" data-platform="picashot" style="display:inline-block; padding:1em 2em; background:#1b1f22; color:#fff; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.2em;">View Full Gallery</a>
 								</div>
 							
 							</article>
@@ -526,8 +527,8 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 								</form>
 								<ul class="icons">
 									
-									<li><a href="https://www.linkedin.com/in/daniel-bird-a6bb13192/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-									<li><a href="https://github.com/birduu" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://www.linkedin.com/in/daniel-bird-a6bb13192/" class="icon brands fa-linkedin social-facade" data-platform="linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/birduu" class="icon brands fa-github social-facade" data-platform="github"><span class="label">GitHub</span></a></li>
 								</ul>
 							</article>
 
@@ -807,6 +808,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 		<!-- Defer non-critical enhancements -->
 		<script src="assets/js/webp-support.js" defer></script>
 		<script src="assets/js/responsive-images.js" defer></script>
+		<script src="assets/js/lazy-facades.js" defer></script>
 		<script src="assets/js/performance.js" defer></script>
 
 	</body>
