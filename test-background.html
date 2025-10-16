@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Background Image Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #131519;
+            color: white;
+        }
+        
+        .test-bg {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 2px solid #333;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .test-bg::before {
+            content: attr(data-name);
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .bg1-original { background-image: url('images/bg1.png'); }
+        .bg1-optimized-jpg { background-image: url('images/bg1_optimized.jpg'); }
+        .bg1-optimized-webp { background-image: url('images/bg1_optimized.webp'); }
+        .bg2-original { background-image: url('images/bg2.png'); }
+        .bg2-optimized-jpg { background-image: url('images/bg2_optimized.jpg'); }
+        .bg2-optimized-webp { background-image: url('images/bg2_optimized.webp'); }
+        
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Background Image Test</h1>
+    <p>This page tests if the background images are accessible and displaying correctly.</p>
+    
+    <h2>Background Image Tests</h2>
+    
+    <div class="test-bg bg1-original" data-name="Original bg1.png"></div>
+    <div class="test-bg bg1-optimized-jpg" data-name="Optimized bg1.jpg"></div>
+    <div class="test-bg bg1-optimized-webp" data-name="Optimized bg1.webp"></div>
+    
+    <div class="test-bg bg2-original" data-name="Original bg2.png"></div>
+    <div class="test-bg bg2-optimized-jpg" data-name="Optimized bg2.jpg"></div>
+    <div class="test-bg bg2-optimized-webp" data-name="Optimized bg2.webp"></div>
+    
+    <h2>Image Loading Status</h2>
+    <div id="status"></div>
+    
+    <script>
+        // Test if images are loading
+        function testImageLoad(src, name) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve({ name, src, status: 'success' });
+                img.onerror = () => resolve({ name, src, status: 'error' });
+                img.src = src;
+            });
+        }
+        
+        const imagesToTest = [
+            { src: 'images/bg1.png', name: 'bg1.png' },
+            { src: 'images/bg1_optimized.jpg', name: 'bg1_optimized.jpg' },
+            { src: 'images/bg1_optimized.webp', name: 'bg1_optimized.webp' },
+            { src: 'images/bg2.png', name: 'bg2.png' },
+            { src: 'images/bg2_optimized.jpg', name: 'bg2_optimized.jpg' },
+            { src: 'images/bg2_optimized.webp', name: 'bg2_optimized.webp' },
+            { src: 'images/overlay.png', name: 'overlay.png' },
+            { src: 'images/overlay_optimized.jpg', name: 'overlay_optimized.jpg' },
+            { src: 'images/overlay_optimized.webp', name: 'overlay_optimized.webp' }
+        ];
+        
+        async function runTests() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p>Testing image accessibility...</p>';
+            
+            const results = await Promise.all(
+                imagesToTest.map(img => testImageLoad(img.src, img.name))
+            );
+            
+            let html = '<h3>Test Results:</h3><ul>';
+            results.forEach(result => {
+                const className = result.status === 'success' ? 'success' : 'error';
+                html += `<li class="${className}">${result.name}: ${result.status}</li>`;
+            });
+            html += '</ul>';
+            
+            statusDiv.innerHTML = html;
+        }
+        
+        runTests();
+    </script>
+</body>
+</html>

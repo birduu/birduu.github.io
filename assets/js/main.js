@@ -24,12 +24,22 @@
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
-		// Update the CSS custom property for the :after pseudo-element
-		document.documentElement.style.setProperty('--bg-image', 'url("../../images/' + newBgImage + '")');
-		
-		// Since we're using optimized WebP images, we don't need to check for WebP support
-		// The images are already in the most compressed format
-		document.documentElement.style.setProperty('--bg-image-webp', 'url("../../images/' + newBgImage + '")');
+		// Get the background element
+		var bgElement = document.getElementById('bg');
+		if (bgElement) {
+			// Create a style element to override the background image
+			var styleId = 'bg-dynamic-style';
+			var existingStyle = document.getElementById(styleId);
+			
+			if (existingStyle) {
+				existingStyle.remove();
+			}
+			
+			var style = document.createElement('style');
+			style.id = styleId;
+			style.textContent = '#bg:after { background-image: url("../../images/' + newBgImage + '") !important; }';
+			document.head.appendChild(style);
+		}
 	}
 
 	// Start background cycling when page loads
