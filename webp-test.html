@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebP Test - Portfolio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: white; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #333; border-radius: 8px; }
+        .image-test { margin: 10px 0; }
+        .webp-status { padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .webp-supported { background: #2d5a2d; border: 1px solid #4a7c4a; }
+        .webp-not-supported { background: #5a2d2d; border: 1px solid #7c4a4a; }
+        img { max-width: 200px; margin: 10px; border-radius: 4px; }
+        .size-comparison { display: flex; gap: 20px; }
+    </style>
+</head>
+<body>
+    <h1>WebP Optimization Test</h1>
+    
+    <div class="test-section">
+        <h2>WebP Support Detection</h2>
+        <div id="webp-status" class="webp-status">Checking WebP support...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Image Loading Test</h2>
+        <div class="image-test">
+            <h3>Gallery Image (with Picture element)</h3>
+            <picture>
+                <source srcset="images/VP/GALLERY/Cyberpunk2077%202025-06-27%2021-49-07.webp" type="image/webp">
+                <img src="images/VP/GALLERY/Cyberpunk2077%202025-06-27%2021-49-07.png" alt="Test Image" />
+            </picture>
+        </div>
+        
+        <div class="image-test">
+            <h3>3D Work Image</h3>
+            <picture>
+                <source srcset="images/jhill.webp" type="image/webp">
+                <img src="images/jhill.png" alt="J Hill Character" />
+            </picture>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Size Comparison</h2>
+        <div class="size-comparison">
+            <div>
+                <h4>Original PNG</h4>
+                <img src="images/jhill.png" alt="Original" />
+                <p>File size: ~3.4MB</p>
+            </div>
+            <div>
+                <h4>WebP Version</h4>
+                <img src="images/jhill.webp" alt="WebP" />
+                <p>File size: ~277KB (92% smaller!)</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Performance Benefits</h2>
+        <ul>
+            <li>✅ 70-98% smaller file sizes</li>
+            <li>✅ Faster page load times</li>
+            <li>✅ Better user experience</li>
+            <li>✅ Automatic fallback for unsupported browsers</li>
+            <li>✅ SEO benefits from faster loading</li>
+        </ul>
+    </div>
+
+    <script>
+        // WebP detection
+        function checkWebPSupport() {
+            return new Promise(function(resolve) {
+                var webP = new Image();
+                webP.onload = webP.onerror = function() {
+                    resolve(webP.height === 2);
+                };
+                webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+            });
+        }
+
+        // Update status
+        checkWebPSupport().then(function(supported) {
+            var statusDiv = document.getElementById('webp-status');
+            if (supported) {
+                statusDiv.textContent = '✅ WebP is supported! Images will load faster.';
+                statusDiv.className = 'webp-status webp-supported';
+                document.body.classList.add('webp-supported');
+            } else {
+                statusDiv.textContent = '❌ WebP not supported. Using original formats.';
+                statusDiv.className = 'webp-status webp-not-supported';
+            }
+        });
+    </script>
+</body>
+</html>

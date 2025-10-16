@@ -26,6 +26,12 @@
 		
 		// Update the CSS custom property for the :after pseudo-element
 		document.documentElement.style.setProperty('--bg-image', 'url("../../images/' + newBgImage + '")');
+		
+		// Check if WebP is supported and update WebP version
+		if (document.body.classList.contains('webp-supported')) {
+			var webpImage = newBgImage.replace(/\.(png|jpg|jpeg)$/i, '.webp');
+			document.documentElement.style.setProperty('--bg-image-webp', 'url("../../images/' + webpImage + '")');
+		}
 	}
 
 	// Start background cycling when page loads
