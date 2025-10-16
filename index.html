@@ -68,7 +68,12 @@
 								<!-- Video Container -->
 								<div class="video-container" style="margin-top: 2em; display: flex; justify-content: center;">
 									<div class="expedition-video-container" style="max-width: 600px; width: 100%;">
-										<div style="font-size:1em; color:#fff; background:#222; padding:0.3em 0.7em; border-radius:6px; margin-bottom:0.8em; text-align:center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)</div>
+										<div style="font-size: 2.5rem; font-weight: 700; color: #fff; text-align: center; margin-bottom: 1rem; position: relative;">
+											<span>Here's what I do</span>
+											<div style="font-size: 1.5rem; margin-top: 0.5rem; animation: bounce 2s infinite;">
+												<i class="fa fa-arrow-down" aria-hidden="true"></i>
+											</div>
+										</div>
 										<div class="video-wrapper" style="border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); overflow: hidden;">
 											<iframe src="https://www.youtube.com/embed/ivaKHiHVWb0" title="CLAIR OBSCUR: EXPEDITION 33 - Narrative Trailer (UNOFFICIAL)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 										</div>
@@ -267,9 +272,17 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 									}
 									
 									.expedition-video-container > div:first-child {
-										font-size: 0.9em;
-										padding: 0.25em 0.5em;
-										margin-bottom: 0.6em;
+										font-size: 2.5rem;
+										margin-bottom: 1rem;
+									}
+									
+									.expedition-video-container > div:first-child span {
+										display: block;
+									}
+									
+									.expedition-video-container > div:first-child div {
+										font-size: 1.5rem;
+										margin-top: 0.5rem;
 									}
 									
 									@media (max-width: 900px) {
@@ -284,9 +297,12 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 										}
 										
 										.expedition-video-container > div:first-child {
-											font-size: 0.8em;
-											padding: 0.2em 0.4em;
-											margin-bottom: 0.5em;
+											font-size: 2rem;
+											margin-bottom: 0.8rem;
+										}
+										
+										.expedition-video-container > div:first-child div {
+											font-size: 1.2rem;
 										}
 										
 										.video-container {
@@ -300,9 +316,25 @@ As a passionate and story-focused Capture Artist, I specialise in capturing the 
 										}
 										
 										.expedition-video-container > div:first-child {
-											font-size: 0.75em;
-											padding: 0.15em 0.3em;
-											margin-bottom: 0.4em;
+											font-size: 1.5rem;
+											margin-bottom: 0.6rem;
+										}
+										
+										.expedition-video-container > div:first-child div {
+											font-size: 1rem;
+										}
+									}
+									
+									/* Bounce animation for arrow */
+									@keyframes bounce {
+										0%, 20%, 50%, 80%, 100% {
+											transform: translateY(0);
+										}
+										40% {
+											transform: translateY(-10px);
+										}
+										60% {
+											transform: translateY(-5px);
 										}
 									}
 								</style>
