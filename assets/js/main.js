@@ -81,6 +81,8 @@
 		var randomIndex = Math.floor(Math.random() * backgroundImages.length);
 		var newBgImage = backgroundImages[randomIndex];
 		
+		console.log('Starting background cycle for:', newBgImage);
+		
 		// Determine which format to use
 		var imageUrl, format;
 		if (supportsAVIF) {
@@ -91,9 +93,13 @@
 			format = 'PNG';
 		}
 		
+		console.log('Attempting to load:', imageUrl, '(' + format + ')');
+		
 		// Create a temporary image to ensure it's loaded before applying
 		var tempImg = new Image();
 		tempImg.onload = function() {
+			console.log('Image loaded successfully:', imageUrl);
+			
 			// Image is loaded, now apply it to the background
 			var styleId = 'bg-cycle-style';
 			var existingStyle = document.getElementById(styleId);
@@ -111,6 +117,8 @@
 		};
 		
 		tempImg.onerror = function() {
+			console.log('Failed to load image:', imageUrl);
+			
 			// If AVIF fails, fallback to PNG
 			if (supportsAVIF && format === 'AVIF') {
 				console.log('AVIF failed, falling back to PNG');
@@ -119,6 +127,8 @@
 				
 				var fallbackImg = new Image();
 				fallbackImg.onload = function() {
+					console.log('PNG fallback loaded successfully:', imageUrl);
+					
 					var styleId = 'bg-cycle-style';
 					var existingStyle = document.getElementById(styleId);
 					if (existingStyle) {
@@ -133,9 +143,16 @@
 					console.log('Background cycled to:', imageUrl, '(' + format + ' - fallback)');
 					isTransitioning = false;
 				};
+				
+				fallbackImg.onerror = function() {
+					console.log('PNG fallback also failed:', imageUrl);
+					console.log('Keeping existing background or CSS fallback');
+					isTransitioning = false;
+				};
+				
 				fallbackImg.src = imageUrl;
 			} else {
-				console.log('Failed to load background image:', imageUrl);
+				console.log('No fallback available, keeping existing background');
 				isTransitioning = false;
 			}
 		};
@@ -143,18 +160,44 @@
 		tempImg.src = imageUrl;
 	}
 
+	// Test function to force a background immediately
+	function testBackground() {
+		console.log('Testing background with PNG directly...');
+		var styleId = 'bg-cycle-style';
+		var existingStyle = document.getElementById(styleId);
+		if (existingStyle) {
+			existingStyle.remove();
+		}
+		
+		var style = document.createElement('style');
+		style.id = styleId;
+		style.textContent = '#bg:after { background-image: url("images/bg1.png") !important; }';
+		document.head.appendChild(style);
+		
+		console.log('Applied test background: images/bg1.png');
+	}
+
 	// Background carousel initialization (will be called from main load handler)
 	function initializeBackgroundCarousel() {
+		console.log('Initializing background carousel...');
+		
 		// Detect AVIF support first
 		detectAVIFSupport();
+		
+		// Test with immediate PNG background first
+		setTimeout(function() {
+			console.log('Testing immediate background...');
+			testBackground();
+		}, 200);
 		
 		// Preload background images for smooth transitions
 		preloadBackgroundImages();
 		
 		// Set initial background after a short delay to allow preloading
 		setTimeout(function() {
+			console.log('Starting background cycling...');
 			cycleBackground();
-		}, 600); // Increased delay to ensure is-preload is removed first
+		}, 800); // Increased delay to ensure is-preload is removed first
 		
 		// Set up periodic cycling (every 30 seconds)
 		bgCycleInterval = setInterval(cycleBackground, 30000);
@@ -163,6 +206,15 @@
 		$header.on('click', function(e) {
 			// Only trigger if clicking on the header itself, not on navigation links
 			if (e.target === this || $(e.target).closest('.content').length > 0) {
+				cycleBackground();
+			}
+		});
+		
+		// Add keyboard shortcut for testing (Ctrl+B)
+		$(document).on('keydown', function(e) {
+			if (e.ctrlKey && e.keyCode === 66) { // Ctrl+B
+				e.preventDefault();
+				console.log('Manual background test triggered');
 				cycleBackground();
 			}
 		});
